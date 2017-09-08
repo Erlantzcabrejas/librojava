@@ -4,20 +4,20 @@ public class Canciones {
 
 	private String nombre;
 	private String artista;
-	private double duracion;
+	private String duracion;
 	
 	
-	public Canciones(String nombre, String artista, double d) {
+	public Canciones(String nombre, String artista, String duracion) {
 		super();
 		this.nombre = nombre;
 		this.artista = artista;
-		this.duracion = d;
+		this.duracion = duracion;
 	}
 	
 
 	@Override
 	public String toString() {
-		return "[nombre=" + nombre + ", artista=" + artista + ", duracion=" + duracion + "]";
+		return "Nombre :" + nombre + ", Artista :" + artista + ", Duracion: " + duracion ;
 	}
 
 
@@ -41,12 +41,12 @@ public class Canciones {
 	}
 
 
-	public double getDuracion() {
+	public String getDuracion() {
 		return duracion;
 	}
 
 
-	public void setDuracion(double duracion) {
+	public void setDuracion(String duracion) {
 		this.duracion = duracion;
 	}
 
