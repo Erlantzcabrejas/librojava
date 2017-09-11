@@ -1,3 +1,4 @@
+package com.ipartek.formacion.javalibro.ejercicios;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -65,11 +66,11 @@ public class Ahorcado {
 						siNo = true;
 					} else if ("no".equalsIgnoreCase(repetir)) {
 						System.out.println("Menudo Loser...");
-						vidas=3;
 						siNo = true;
 						reinicio = false;
 						numeroBien = true;
 						acierto = true;
+						vidas=0;
 					}
 
 				} catch (InputMismatchException e) {

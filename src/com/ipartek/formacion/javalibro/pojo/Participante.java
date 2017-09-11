@@ -1,3 +1,5 @@
+package com.ipartek.formacion.javalibro.pojo;
+import com.ipartek.formacion.javalibro.excepciones.ParticipanteException;
 
 public class Participante {
 
@@ -7,7 +9,7 @@ public class Participante {
 	private String usuarioGit;
 	private String email;
 	private boolean trabajador;
-	
+	private int edad;
 		//2. Constructores--> Se llama igual que la clase...
 		
 		
@@ -18,7 +20,7 @@ public class Participante {
 			this.usuarioGit = usuarioGit;
 			this.email="";
 			this.trabajador=false;
-			
+			this.edad=0;
 		}
 		
 		//CONSTRUCTOR GENERADO DE SUPERCLASE
@@ -28,6 +30,24 @@ public class Participante {
 			this.usuarioGit = "";
 			this.email="";
 			this.trabajador=false;//IMPLEMENTAR
+			
+			
+			this.edad=0;
+		}
+		public Participante(String nombre, int edad) throws ParticipanteException { 
+			super();
+			this.nombre=nombre;
+			this.usuarioGit = "";
+			this.email="";
+			this.trabajador=false;//IMPLEMENTAR
+			
+			if (edad <0) {
+				throw new ParticipanteException(ParticipanteException.EXCEPTION_MENOR_CERO);
+			}else if(edad >100) {
+				throw new ParticipanteException(ParticipanteException.EXCEPTION_MAYOR_CIEN);
+			}
+			this.setEdad(edad);
+		
 		}
 		
 		//3. Getters y Setters...Son necesarios para mantener la encapsulacion
@@ -57,9 +77,22 @@ public class Participante {
 		public void setTrabajador(boolean trabajador) {
 			this.trabajador = trabajador;
 		}
-	//4. Otros metodos...
-	
 		
+		public int getEdad() {
+			return edad;
+		}
+
+		public void setEdad(int edad) throws ParticipanteException {
+			if (edad <0) {
+				throw new ParticipanteException(ParticipanteException.EXCEPTION_MENOR_CERO);
+			}else if(edad >100) {
+				throw new ParticipanteException(ParticipanteException.EXCEPTION_MAYOR_CIEN);
+			}
+			
+			this.edad = edad;
+		}
+
+		//4. Otros metodos...
 		String getLinkGitHub() {
 			
 			
@@ -67,6 +100,12 @@ public class Participante {
 			
 		}
 	
+	@Override
+		public String toString() {
+			return "Participante [nombre=" + nombre + ", usuarioGit=" + usuarioGit + ", email=" + email
+					+ ", trabajador=" + trabajador + ", edad=" + edad + "]";
+		}
+
 	public static void main(String[] args) {
 		
 

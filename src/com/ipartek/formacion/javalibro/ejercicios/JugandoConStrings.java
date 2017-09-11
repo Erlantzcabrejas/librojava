@@ -1,3 +1,4 @@
+package com.ipartek.formacion.javalibro.ejercicios;
 import org.omg.CORBA.portable.ValueOutputStream;
 
 public class JugandoConStrings {
