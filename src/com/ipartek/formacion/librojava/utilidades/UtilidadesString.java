@@ -1,4 +1,4 @@
-package com.ipartek.formacion.javalibro.ejercicios;
+package com.ipartek.formacion.librojava.utilidades;
 
 public class UtilidadesString {
 	
