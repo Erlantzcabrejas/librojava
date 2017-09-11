@@ -14,32 +14,30 @@ public class UtilidadesColeciones {
 	
 	static int[] ordenarArray( int[] aDesordenado, boolean orden ) {
 		
-		int[] resul = aDesordenado;
 		
+		int[] resul = aDesordenado.clone();
+		int aux=0;
+		
+		if(orden) {//mayor a menor
+			for(int x=0;x<(resul.length);x++) {
+				for(int i=0;i<(resul.length-1);i++) {
+					if(resul[i]>resul[i+1]) {
+						aux=resul[i];
+						resul[i]=resul[i+1];
+						resul[i+1]=aux;
+					}else {
+						
+					}
+			
+					
+				}//fin del for i
+			
+				System.out.print(resul[x]+"-");
+			}
+		}
 		return resul;
 	}
 	
-	public static void main(String[] args) {
-		
-		int[] aDesordando = {0,3,1,8,7,2,5,4,6,9};
-		int aux=0;
-		
-		for(int x=0;x<(aDesordando.length);x++) {
-			for(int i=0;i<(aDesordando.length-1);i++) {
-				if(aDesordando[i]>aDesordando[i+1]) {
-					aux=aDesordando[i];
-					aDesordando[i]=aDesordando[i+1];
-					aDesordando[i+1]=aux;
-				}else {
-					
-				}
-		
-				
-			}//fin del for i
-		
-			System.out.print(aDesordando[x]+"-");
-		}//fin del for x
-		
-	}
+
 	
 }
