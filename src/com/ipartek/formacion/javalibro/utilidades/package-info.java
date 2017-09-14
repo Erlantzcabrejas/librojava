@@ -5,4 +5,4 @@
  * @author Administrador
  *
  */
-package com.ipartek.formacion.librojava.utilidades;
+package com.ipartek.formacion.javalibro.utilidades;
