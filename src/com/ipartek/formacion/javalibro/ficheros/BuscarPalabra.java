@@ -61,6 +61,14 @@ public class BuscarPalabra {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		String linea="";
+		String palabra="osobuko";
+		File[] ficheros = directorio.listFiles();
+		FileReader fr;
+		BufferedReader br=null;
+		
+		
+		
 		File f = new File("C:\\buscatesoro");
 		listarDirectorio(f, "----");
 	}
