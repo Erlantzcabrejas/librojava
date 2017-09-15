@@ -17,58 +17,62 @@ import java.io.IOException;
 public class BuscarPalabra {
 
 	public static void listarDirectorio(File directorio, String separador) {
+
+		String linea = "";
+		String palabra = "osobuko";
+
 		
-		
-		
-		
-		String linea="";
-		String palabra="osobuko";
+		//Recursos para la lectura de fichero
 		File[] ficheros = directorio.listFiles();
-		FileReader fr;
-		BufferedReader br=null;
-		
+		FileReader fr=null;
+		BufferedReader br = null;
+
+		//Recorremos uno a uno todos los ficheros
 		for (int x = 0; x < ficheros.length; x++) {
 			System.out.println(separador + ficheros[x].getName());
-			if (ficheros[x].isDirectory()) {
+			if (ficheros[x].isDirectory()) {	//es un directorio
 				listarDirectorio(ficheros[x], separador + separador);
-			}else {
+			} else {							//es un fichero
+					
 				
-				if(ficheros[x].isFile()) {
+				//buscar palabra
+				if (ficheros[x].isFile()) {
 					try {
-						fr=new FileReader(ficheros[x]);
-						br=new BufferedReader(fr);
-						linea=br.readLine();
-						while((palabra = br.readLine())!= null){
-							if(palabra.indexOf("osobuko")!= -1){
-							System.out.println("se encontro la palabra "+ palabra);
+						fr = new FileReader(ficheros[x]);
+						br = new BufferedReader(fr);
+						linea = br.readLine();
+						
+						//leer linea a linea todo el fichero de texto
+						while ((linea = br.readLine()) != null) {
+							if (linea.indexOf(palabra) != -1) {
+								System.out.println("Se encontro la palabra " + palabra+" en fichero "+ficheros[x]);
 							}
-							
+
 						}
-						/*if(linea!=null) {
-							System.out.println(linea);
-						}*/
+						
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}finally {
+						try {
+							br.close();
+							fr.close();
+						}catch(Exception e) {
+							
+						}
 					}
-					
+
 				}
-				
-				
+
 			}
+
 		}
+
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String linea="";
-		String palabra="osobuko";
-		File[] ficheros = directorio.listFiles();
-		FileReader fr;
-		BufferedReader br=null;
-		
-		
-		
+
 		File f = new File("C:\\buscatesoro");
 		listarDirectorio(f, "----");
 	}
