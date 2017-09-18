@@ -14,10 +14,18 @@ public class LibrosRecomendados {
 		li.setAutor("Gabriel Garcia");
 		li.setPaginas(307);
 		
+		//PRUEBA DE ACCESO A METODO PROTEGIDO
+		li.metodoProtegido();
+		
 		LibroElectronico le=new LibroElectronico("Años salvajes");
 		le.setAutor("William Finnegan");
 		le.setPaginas(523);
 		le.setTamanyo(27);
+		
+		le.metodoProtegido();
+		
+		
+		
 		
 		LibroPapel lp=new LibroPapel("Papillon");
 		lp.setAutor("Charriere Henri");
