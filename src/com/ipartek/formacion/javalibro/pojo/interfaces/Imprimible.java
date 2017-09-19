@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 
  * ArrayList<Imprimible> lista
  */
-public interface Imprimible extends Serializable, Cloneable{
+public interface Imprimible {
 
 	
 	
