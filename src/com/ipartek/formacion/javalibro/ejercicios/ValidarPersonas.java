@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import com.ipartek.formacion.javalibro.excepciones.PersonaException;
 import com.ipartek.formacion.javalibro.pojo.Persona;
+import com.ipartek.formacion.javalibro.utilidades.Validaciones;
 
 public class ValidarPersonas {
 
@@ -53,7 +54,9 @@ public class ValidarPersonas {
 			FileReader fr = null;     
 			BufferedReader br = null;
 			FileWriter fw1=null;
-			BufferedWriter bw=null;
+			FileWriter fw2=null;
+			BufferedWriter bw1=null;
+			BufferedWriter bw2=null;
 			
 			try {
 				
@@ -62,25 +65,45 @@ public class ValidarPersonas {
 				String linea = "";
 				Persona p = null;
 				String[] campos;
-				while( (linea = br.readLine()) != null ) {
+				while( (linea = br.readLine()) != null ) { //LEEMOS FICHERO
 					
-					campos = linea.split(",");
+					campos = linea.split(","); //DIVIDIMOS POR ","
 					if ( campos.length == NUM_CAMPOS_LINEA ) {
 						p = mapeoLinea(campos);
-						if(p.getEdad()>=18) {
+						
+						//MIENTRAS SE CUMPLA, AÑADIR A LA LISTA
+						if(p.getEdad()>=18&&Validaciones.email(p.getEmail())&&Validaciones.dni(p.getDni())) { 
 							lista.add(p);
-							System.out.println(p);
-						}else {
-							System.out.println(p.getNombre()+" tiene "+p.getEdad()+" años. No tiene edad suficiente");
+							
+							fw1 = new FileWriter("C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.OK.txt");
+							bw1 = new BufferedWriter(fw1);
+							bw1.write("Añadimos a la lista correcta a :"+p+"\r\n");
+							
+							
+						}//FIN DE IF QUE COMPRUEBA CONDICIONES A CUMPLIR PARA GUARDAR EN ARCHIVO
+						else {
+							fw2=new FileWriter("C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.error.txt");
+							bw2=new BufferedWriter(fw2);
+							bw2.write("No cumple una de las condiciones: Error--->"+p+"\r\n");
 						}
 						
 						
-					}				
-				}			
+					}//FIN DE IF QUE MIDE NUMERO CAMPOS			
+					
+				}	//FIN DE WHILE		
+				
 			}catch (Exception e) {
 				e.printStackTrace();
 			}finally {
-				//TODO cerrar recursos abiertos
+				try {
+					bw1.close();
+					bw2.close();
+					fw1.close();
+					bw2.close();
+				} catch (IOException e) {
+					System.out.println("No se puede cerrar el Buffer y Writer");
+					e.printStackTrace();
+				}
 			}
 
 		}

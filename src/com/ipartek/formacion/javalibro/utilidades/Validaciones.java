@@ -13,7 +13,7 @@ public class Validaciones {
 	 * @return true si es valido, false en caso contrario
 	 */
 	String email;
-	static String dni;
+	static String dni="";
 
 	public Validaciones(String email, String dni) {
 		super();
@@ -24,6 +24,8 @@ public class Validaciones {
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
 
+	
+	
 	public static boolean email(String email) {
 		boolean resul = false;
 		if (email != null) {
@@ -41,12 +43,17 @@ public class Validaciones {
 	 * @return
 	 */
 	
-	public static boolean dni(String dni) {
-		String letraMayuscula = ""; // Guardaremos la letra introducida en formato mayúscula
+	 public static boolean dni(String dni) {
+		
+		 boolean resul = false;
+			
+			if ( dni != null ) {
+		 
+		 String letraMayuscula = ""; // Guardaremos la letra introducida en formato mayúscula
 
 		// Aquí excluimos cadenas distintas a 9 caracteres que debe tener un dni y
 		// también si el último caracter no es una letra
-		if (dni.length() == 9 || Character.isLetter(dni.charAt(8)) == false) {
+		if (dni.length() != 9 || Character.isLetter(dni.charAt(8)) == false) {
 			return false;
 		}
 
@@ -58,13 +65,12 @@ public class Validaciones {
 		// y que la letra introducida es igual a la de la ecuación
 		// Llamamos a los métodos privados de la clase soloNumeros() y letraDNI()
 		if (soloNumeros(dni) == true && letraDNI(dni).equals(letraMayuscula)) {
-			return true;
-		} else {
-			return false;
+			resul= true;
 		}
 
-	}
-
+			}
+		return resul;
+	 }
 	private static boolean soloNumeros(String dni) {
 		
 		int i, j = 0;

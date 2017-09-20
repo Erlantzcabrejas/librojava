@@ -23,8 +23,9 @@ public class ValidacionesTest extends TestCase {
 
 	}
 	public void testDNI() {
-		assertFalse(Validaciones.dni(null));
 		assertFalse(Validaciones.dni(""));
+		assertFalse(Validaciones.dni(null));
+		
 		assertFalse(Validaciones.dni("2eee"));
 		assertFalse(Validaciones.dni("1111111"));
 		assertFalse(Validaciones.dni("11111111Y"));

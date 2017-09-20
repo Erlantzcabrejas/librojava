@@ -1,0 +1,1 @@
+Añadimos a la lista correcta a :Persona [nombre=Sandra, ape1=Welsh, ape2=Hu�var, email=SandraJWelsh@mailinator.com, dni=45383305G, edad=41, rol=TRABAJADOR]

@@ -1,0 +1,1 @@
+No cumple una de las condiciones: Error--->Persona [nombre=Danielle, ape1=Huggins, ape2=Izurtza, email=DanielleLHuggins@pookmail.com, dni=359696593Q, edad=48, rol=TRABAJADOR]
