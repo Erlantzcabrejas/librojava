@@ -11,71 +11,150 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import com.ipartek.formacion.javalibro.excepciones.PersonaException;
 import com.ipartek.formacion.javalibro.pojo.Persona;
 
 public class TiempoPersonas {
 
-	public static void main(String[] args) throws FileNotFoundException {
-		String dniBuscar="26779063W";
-		FileReader fr = null; // lector de ficheros de caracteres
-		BufferedReader br = null;
-		/* ARRAY */Persona p = null;
-		long tInicio=System.currentTimeMillis();
-		/* ARRAYLIST */List<Persona> listaPersonas = null;
+	 
+		static final String PATH_FICHERO_PERSONAS = "C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\personas.txt";
 		
-		HashMap<String, Persona> hm = new HashMap<String, Persona>();
+		static final int NUM_CAMPOS_LINEA = 7;
+		static final int CAMPOS_NOMBRE = 0;
+		static final int CAMPOS_APE1 = 1;
+		static final int CAMPOS_APE2 = 2;
+		static final int CAMPOS_EDAD = 3;
+		static final int CAMPOS_MAIL = 4;
+		static final int CAMPOS_DNI = 5;	
+		static final int CAMPOS_ROL = 6;
 		
-		try {
-			fr = new FileReader("C:\\Users\\Administrador\\eclipse-workspace\\LibroAnder\\data\\personas.txt");
-			br = new BufferedReader(fr);
-			String lectura = "";
+		static final String DNI_BUSCAR = "26779063W";
+		
+		public static void main(String[] args) {
+			
+			
+			cargaArrayList();
+					
+			
+			cargaHahsMap();		
+			
+		}
 
-			//guardar fichero texto a hashmap
-			while ((lectura = br.readLine()) != null) {
-
-				// MOSTRAR ARRAYLIST CON NOMBRE Y DNI
-				lectura = br.readLine();
-
-				String[] trozos = lectura.split(",");
-				if(trozos.length==7) {
-				p = new Persona(trozos[0], trozos[1], trozos[2], trozos[3], trozos[4], trozos[5], trozos[6]);
-				 listaPersonas =Arrays.asList(p);
-				 
+		private static void cargaHahsMap() {
+			HashMap<String,Persona> mapa = new HashMap<String,Persona>();
+			FileReader fr = null;     
+			BufferedReader br = null;
+			
+			try {
 				
-				
-				//PARTE DEL HASHMAP
-				//hm.put(p.getDni(), p);
-				
-				
-				}//FIN DE IF
+				fr = new FileReader(PATH_FICHERO_PERSONAS);
+				br = new BufferedReader(fr);
+				String linea = "";
+				Persona p = null;
+				String[] campos;
+				while( (linea = br.readLine()) != null ) {
+					
+					campos = linea.split(",");
+					if ( campos.length == NUM_CAMPOS_LINEA ) {
+						p = mapeoLinea(campos);
+						mapa.put(p.getDni(), p);
+					}				
+				}			
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				//TODO cerrar recursos abiertos
 			}
-			System.out.println(listaPersonas.get(0).getNombre()+" "+dniBuscar.equals(listaPersonas.get(0).getDni()));
-		
+					
+			//recorrer de uno en uno para ver cuanto tarda
+			long inicio = System.currentTimeMillis();
 			
-			//Recorrer el HASHMAP
-			
-			/*Collection<Persona> cole = hm.values();
+			Collection cole = mapa.values();		
 			Iterator<Persona> it = cole.iterator();
-			Persona itPersona = null;
-			while (it.hasNext()) {
-				itPersona = it.next();
-				System.out.println(itPersona);
-			}*/
+			Persona pIteracion = null;
+			while( it.hasNext() ) {
+				pIteracion = it.next();
+			}
+			
+			long fin = System.currentTimeMillis();
+			System.out.println("HashMap Listar " + ( fin - inicio ) + " ms");
+					
+			//buscar
+			inicio = System.currentTimeMillis();
+			Persona pencontrada = mapa.get(DNI_BUSCAR);
+			fin = System.currentTimeMillis();
+			System.out.println("HashMap buscar dni " + ( fin - inicio ) + " ms");
+			
+		}
+
+		private static void cargaArrayList() {
+			ArrayList<Persona> lista = new ArrayList();
+			FileReader fr = null;     
+			BufferedReader br = null;
+			
+			try {
+				
+				fr = new FileReader(PATH_FICHERO_PERSONAS);
+				br = new BufferedReader(fr);
+				String linea = "";
+				Persona p = null;
+				String[] campos;
+				while( (linea = br.readLine()) != null ) {
+					
+					campos = linea.split(",");
+					if ( campos.length == NUM_CAMPOS_LINEA ) {
+						p = mapeoLinea(campos);
+						lista.add(p);
+					}				
+				}			
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				//TODO cerrar recursos abiertos
+			}
 			
 			
-			//MOSTRAR LO QUE HA DURADO EL PROCESO
-			long tFinal= System.currentTimeMillis();
-			System.out.println(tFinal-tInicio);
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
+			
+			//recorrer de uno en uno para ver cuanto tarda
+			long inicio = System.currentTimeMillis();
+			
+			Iterator<Persona> it = lista.iterator();
+			Persona pIteracion = null;
+			while( it.hasNext() ) {
+				pIteracion = it.next();
+			}
+			
+			long fin = System.currentTimeMillis();
+			System.out.println("ArrayList Listar " + ( fin - inicio ) + " ms");
+			
+			
+			//buscar
+			inicio = System.currentTimeMillis();
+			it = lista.iterator();
+			pIteracion = null;
+			while( it.hasNext() ) {
+				pIteracion = it.next();
+				if ( DNI_BUSCAR.equalsIgnoreCase(pIteracion.getDni())) {
+					//System.out.println("encontrada persona " + pIteracion.toString());
+					break;
+				}
+			}		
+			fin = System.currentTimeMillis();
+			System.out.println("ArrayList buscar dni " + ( fin - inicio ) + " ms");
+			
 			
 		}
 		
-		
-
-	}
+		private static Persona mapeoLinea (String[] campos) throws NumberFormatException, PersonaException {
+			
+			Persona p = new Persona(    campos[CAMPOS_NOMBRE], 
+										campos[CAMPOS_APE1], 
+										campos[CAMPOS_APE2], 
+										campos[CAMPOS_MAIL], 
+										campos[CAMPOS_DNI], 
+										campos[CAMPOS_ROL],
+										Integer.parseInt(campos[CAMPOS_EDAD]));	
+			return p;
+		}
 
 }

@@ -12,11 +12,19 @@ public class Validaciones {
 	 * 
 	 * @return true si es valido, false en caso contrario
 	 */
+	String email;
+	static String dni;
+
+	public Validaciones(String email, String dni) {
+		super();
+		this.email = email;
+		this.dni = dni;
+	}
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
 			Pattern.CASE_INSENSITIVE);
 
-	static boolean email(String email) {
+	public static boolean email(String email) {
 		boolean resul = false;
 		if (email != null) {
 			Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
@@ -26,74 +34,77 @@ public class Validaciones {
 	}
 
 	
+	/*
+	 * Metodo para validar un DNI
+	 * @see https://www.dropbox.com/s/ngefaf33ssfabxb/ValidadorDNI.java?dl=0
+	 * @param dni String Documento Identidad Nacional con 8 digitos y letra (sin espacios, ni guiones)
+	 * @return
+	 */
 	
-	
-	
-	
-	static boolean dni(String dni) {
+	public static boolean dni(String dni) {
 		String letraMayuscula = ""; // Guardaremos la letra introducida en formato mayúscula
 
 		// Aquí excluimos cadenas distintas a 9 caracteres que debe tener un dni y
 		// también si el último caracter no es una letra
-		if (dni.length() == 9 || Character.isLetter(dni.charAt(8)) == true) {
-			return true;
+		if (dni.length() == 9 || Character.isLetter(dni.charAt(8)) == false) {
+			return false;
 		}
 
 		// Al superar la primera restricción, la letra la pasamos a mayúscula
 		letraMayuscula = (dni.substring(8)).toUpperCase();
-		return false;
 		
-		// Por último validamos que sólo tengo 8 dígitos entre los 8 primeros caracteres y que la letra introducida es igual a la de la ecuación
-        // Llamamos a los métodos privados de la clase soloNumeros() y letraDNI()
-		 if(soloNumeros() == true && letraDNI().equals(letraMayuscula)) {
-	            return true;
-	        }
-	        else {
-	            return false;
-	        }
-		
-		
+
+		// Por último validamos que sólo tengo 8 dígitos entre los 8 primeros caracteres
+		// y que la letra introducida es igual a la de la ecuación
+		// Llamamos a los métodos privados de la clase soloNumeros() y letraDNI()
+		if (soloNumeros(dni) == true && letraDNI(dni).equals(letraMayuscula)) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
-	 private boolean soloNumeros() {
-		 int dni=0;
-         int i, j = 0;
-         String numero = ""; // Es el número que se comprueba uno a uno por si hay alguna letra entre los 8 primeros dígitos
-         String miDNI = ""; // Guardamos en una cadena los números para después calcular la letra
-         String[] unoNueve = {"0","1","2","3","4","5","6","7","8","9"};
 
-         for(i = 0; i < dni.length() - 1; i++) {
-             numero = dni.substring(i, i+1);
+	private static boolean soloNumeros(String dni) {
+		
+		int i, j = 0;
+		String numero = ""; // Es el número que se comprueba uno a uno por si hay alguna letra entre los 8
+							// primeros dígitos
+		String miDNI = ""; // Guardamos en una cadena los números para después calcular la letra
+		String[] unoNueve = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-             for(j = 0; j < unoNueve.length; j++) {
-                 if(numero.equals(unoNueve[j])) {
-                     miDNI += unoNueve[j];
-                 }
-             }
-         }
+		for (i = 0; i < dni.length() - 1; i++) {
+			numero = dni.substring(i, i + 1);
 
-         if(miDNI.length() != 8) {
-             return false;
-         }
-         else {
-             return true;
-         }
-     }
+			for (j = 0; j < unoNueve.length; j++) {
+				if (numero.equals(unoNueve[j])) {
+					miDNI += unoNueve[j];
+				}
+			}
+		}
 
-    
-	 
-	 private String letraDNI() {
-     // El método es privado porque lo voy a usar internamente en esta clase, no se necesita fuera de ella
+		if (miDNI.length() != 8) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-     // pasar miNumero a integer
-     int miDNI = Integer.parseInt(dni.substring(0,8));
-     int resto = 0;
-     String miLetra = "";
-     String[] asignacionLetra = {"T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"};
+	private static String letraDNI(String dni) {
+		// El método es privado porque lo voy a usar internamente en esta clase, no se
+		// necesita fuera de ella
 
-     resto = miDNI % 23;
+		// pasar miNumero a integer
+		int miDNI = Integer.parseInt(dni.substring(0, 8));
+		int resto = 0;
+		String miLetra = "";
+		String[] asignacionLetra = { "T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S",
+				"Q", "V", "H", "L", "C", "K", "E" };
 
-     miLetra = asignacionLetra[resto];
+		resto = miDNI % 23;
 
-     return miLetra;
- }
+		miLetra = asignacionLetra[resto];
+
+		return miLetra;
+	}
 }

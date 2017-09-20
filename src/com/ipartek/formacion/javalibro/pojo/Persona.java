@@ -1,24 +1,31 @@
 package com.ipartek.formacion.javalibro.pojo;
 
+import com.ipartek.formacion.javalibro.excepciones.PersonaException;
+import com.ipartek.formacion.javalibro.utilidades.Validaciones;
+
 public class Persona {
+	
+	public static int MAYOR_EDAD=18;
+	
 	
 	String nombre;
 	String ape1;
 	String ape2;
 	String email;
 	String dni;
-	String edad;
+	int edad;
 	String rol;
 	
-	public Persona(String nombre, String ape1, String ape2, String email, String dni, String edad, String rol) {
+	public Persona(String nombre, String ape1, String ape2, String email, String dni,String rol,int edad) throws PersonaException {
 		super();
 		this.nombre = nombre;
 		this.ape1 = ape1;
 		this.ape2 = ape2;
 		this.email = email;
 		this.dni = dni;
-		this.edad = edad;
 		this.rol = rol;
+		this.edad = edad;
+		//setEdad(edad);
 	}
 
 	
@@ -50,7 +57,11 @@ public class Persona {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws PersonaException {
+		if(!Validaciones.email(email)) {
+			throw new PersonaException(PersonaException.MSG_MAIL_ERROR);
+		}
+		
 		this.email = email;
 	}
 
@@ -58,15 +69,27 @@ public class Persona {
 		return dni;
 	}
 
-	public void setDni(String dni) {
+	public void setDni(String dni) throws PersonaException {
+		if(!Validaciones.dni(dni)){
+			throw new PersonaException(PersonaException.MSG_DNI_ERROR);
+			
+		}
 		this.dni = dni;
 	}
 
-	public String getEdad() {
+	public int getEdad() {
 		return edad;
 	}
 
-	public void setEdad(String edad) {
+	/*
+	 * Setea la edad de la Persona
+	 * @param edad int años de la Persona
+	 * @throws PersonaException <18
+	 */
+	public void setEdad(int edad) throws PersonaException {
+		if(edad<MAYOR_EDAD) {
+			throw new PersonaException(PersonaException.MSG_EDAD_MENOR);
+		}
 		this.edad = edad;
 	}
 
