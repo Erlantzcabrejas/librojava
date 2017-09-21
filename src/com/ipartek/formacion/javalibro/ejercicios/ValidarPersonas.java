@@ -2,6 +2,7 @@ package com.ipartek.formacion.javalibro.ejercicios;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,79 +34,89 @@ public class ValidarPersonas {
 
 	public static void main(String[] args) {
 		cargaArrayList();
-		
+
 	}
 
 	private static Persona mapeoLinea(String[] campos) throws NumberFormatException, PersonaException {
 
-		Persona p = new Persona(campos[CAMPOS_NOMBRE], 
-								campos[CAMPOS_APE1], 
-								campos[CAMPOS_APE2], 
-								campos[CAMPOS_MAIL],
-								campos[CAMPOS_DNI], 
-								campos[CAMPOS_ROL], 
-								Integer.parseInt(campos[CAMPOS_EDAD]));
+		Persona p = new Persona(campos[CAMPOS_NOMBRE], campos[CAMPOS_APE1], campos[CAMPOS_APE2], campos[CAMPOS_MAIL],
+				campos[CAMPOS_DNI], campos[CAMPOS_ROL], Integer.parseInt(campos[CAMPOS_EDAD]));
 		return p;
 	}
 
-	
-		private static void cargaArrayList() {
-			ArrayList<Persona> lista = new ArrayList();
-			FileReader fr = null;     
-			BufferedReader br = null;
-			FileWriter fw1=null;
-			FileWriter fw2=null;
-			BufferedWriter bw1=null;
-			BufferedWriter bw2=null;
+	private static void cargaArrayList() {
+		ArrayList<Persona> lista = new ArrayList();
+		FileReader fr = null;
+		BufferedReader br = null;
+		FileWriter fw1 = null;
+		FileWriter fw2 = null;
+		BufferedWriter bw1 = null;
+		BufferedWriter bw2 = null;
+		long contbueno=0;
+		long contmal=0;
+		
+		try { // PRIMER TRY
+			fr = new FileReader(PATH_FICHERO_PERSONAS);
+			br = new BufferedReader(fr);
+			String linea = "";
+			Persona p = null;
+			String[] campos;
+			fw1 = new FileWriter(	//ESCRIBIMOS EN Personas.OK.txt
+					"C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.OK.txt");
+			fw2 = new FileWriter(	//ESCRIBIMOS EN Personas.error.txt
+					"C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.error.txt");
 			
-			try {
-				
-				fr = new FileReader(PATH_FICHERO_PERSONAS);
-				br = new BufferedReader(fr);
-				String linea = "";
-				Persona p = null;
-				String[] campos;
-				while( (linea = br.readLine()) != null ) { //LEEMOS FICHERO
-					
-					campos = linea.split(","); //DIVIDIMOS POR ","
-					if ( campos.length == NUM_CAMPOS_LINEA ) {
+			while ((linea = br.readLine()) != null) { // LEEMOS FICHERO
+
+				try { // SEGUNDO TRY
+
+					campos = linea.split(","); // DIVIDIMOS POR ","
+					if (campos.length == NUM_CAMPOS_LINEA) {
 						p = mapeoLinea(campos);
-						
-						//MIENTRAS SE CUMPLA, AÑADIR A LA LISTA
-						if(p.getEdad()>=18&&Validaciones.email(p.getEmail())&&Validaciones.dni(p.getDni())) { 
-							lista.add(p);
+						lista.add(p);
+						// MIENTRAS SE CUMPLA, AÑADIR A LA LISTA
+						if (p.getEdad() >= 18 && Validaciones.email(p.getEmail()) && Validaciones.dni(p.getDni())) {
 							
-							fw1 = new FileWriter("C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.OK.txt");
+
 							bw1 = new BufferedWriter(fw1);
-							bw1.write("Añadimos a la lista correcta a :"+p+"\r\n");
-							
-							
-						}//FIN DE IF QUE COMPRUEBA CONDICIONES A CUMPLIR PARA GUARDAR EN ARCHIVO
+							bw1.write(p + "\r\n");
+							bw1.flush();
+							contbueno++;	
+						} // FIN DE IF QUE COMPRUEBA CONDICIONES A CUMPLIR PARA GUARDAR EN ARCHIVO
+						
 						else {
-							fw2=new FileWriter("C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.error.txt");
-							bw2=new BufferedWriter(fw2);
-							bw2.write("No cumple una de las condiciones: Error--->"+p+"\r\n");
+							//METEMOS EN Personas.error.txt
+							bw2 = new BufferedWriter(fw2);
+							bw2.write(p + "\r\n");
+							bw2.flush();
+							contmal++;
+							
 						}
-						
-						
-					}//FIN DE IF QUE MIDE NUMERO CAMPOS			
-					
-				}	//FIN DE WHILE		
-				
-			}catch (Exception e) {
-				e.printStackTrace();
-			}finally {
-				try {
-					bw1.close();
-					bw2.close();
-					fw1.close();
-					bw2.close();
-				} catch (IOException e) {
-					System.out.println("No se puede cerrar el Buffer y Writer");
+
+					} // FIN DE IF QUE MIDE NUMERO CAMPOS
+
+				} catch (Exception e) { /* FIN DE TRY2 */
 					e.printStackTrace();
 				}
+			} // FIN DE WHILE
+			System.out.println(contbueno+" usuarios son correctos");
+			System.out.println(contmal+" usuarios son incorrectos");
+			System.out.println("Se han distribuido los usuarios en sus respectivos .txt");
+		} catch (Exception e1) { // FIN DE TRY1
+			e1.printStackTrace();
+			System.out.println();
+		} finally {
+			try {
+				bw1.close();
+				bw2.close();
+				fw1.close();
+				bw2.close();
+			} catch (IOException e) {
+				System.out.println("No se puede cerrar el Buffer y Writer");
+				e.printStackTrace();
 			}
+		} // FIN DE FINALLY
 
-		}
-	
+	}// FIN METODO cargaArrayList()
+
 }

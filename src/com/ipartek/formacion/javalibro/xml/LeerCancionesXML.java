@@ -49,10 +49,13 @@ public class LeerCancionesXML {
 				
 				
 				element=(Element)nCanciones.item(i);
-				//long id= element.getAttribute("id");
+				String idString= element.getAttribute("id");
+				long id= Long.parseLong(idString);
 				String nombre= element.getElementsByTagName("nombre").item(0).getTextContent();
+				String artista= element.getElementsByTagName("artista").item(0).getTextContent();
+				String duracion=element.getElementsByTagName("duracion").item(0).getTextContent();
 				
-				c=new Canciones(nombre, "", "");
+				c=new Canciones(nombre, artista,duracion,id);
 				canciones.add(c);
 			}
 		

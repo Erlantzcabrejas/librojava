@@ -20,7 +20,7 @@ public class Canciones {
 		this.nombre = nombre;
 		this.artista = artista;
 		this.duracion = duracion;
-		this.id = -1;
+		this.id = id;
 	}
 
 	public Canciones(String nombre, String artista, String duracion) {
