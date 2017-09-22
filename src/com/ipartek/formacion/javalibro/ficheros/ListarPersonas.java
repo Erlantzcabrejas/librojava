@@ -27,7 +27,7 @@ public class ListarPersonas {
 
 		try {
 
-			fr = new FileReader("C:\\Users\\Administrador\\eclipse-workspace\\LibroAnder\\data\\personas.txt");
+			fr = new FileReader("C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\personas.txt");
 			br = new BufferedReader(fr);
 			String linea="";
 			

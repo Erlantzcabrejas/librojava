@@ -17,7 +17,7 @@ import com.ipartek.formacion.javalibro.utilidades.Validaciones;
 
 public class ValidarPersonas {
 
-	private String dni;
+	
 	static final String PATH_FICHERO_PERSONAS = "C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\personas.txt";
 	static final int CAMPOS_NOMBRE = 0;
 	static final int CAMPOS_APE1 = 1;
@@ -28,9 +28,7 @@ public class ValidarPersonas {
 	static final int CAMPOS_ROL = 6;
 	static final int NUM_CAMPOS_LINEA = 7;
 
-	public ValidarPersonas(String dni) {
-		this.dni = dni;
-	}
+	
 
 	public static void main(String[] args) {
 		cargaArrayList();
@@ -52,56 +50,61 @@ public class ValidarPersonas {
 		FileWriter fw2 = null;
 		BufferedWriter bw1 = null;
 		BufferedWriter bw2 = null;
-		long contbueno=0;
-		long contmal=0;
-		
+		long contbueno = 0;
+		long contmal = 0;
+
 		try { // PRIMER TRY
 			fr = new FileReader(PATH_FICHERO_PERSONAS);
 			br = new BufferedReader(fr);
 			String linea = "";
 			Persona p = null;
 			String[] campos;
-			fw1 = new FileWriter(	//ESCRIBIMOS EN Personas.OK.txt
+			fw1 = new FileWriter( // ESCRIBIMOS EN Personas.OK.txt
 					"C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.OK.txt");
-			fw2 = new FileWriter(	//ESCRIBIMOS EN Personas.error.txt
+			bw1 = new BufferedWriter(fw1);
+			fw2 = new FileWriter( // ESCRIBIMOS EN Personas.error.txt
 					"C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.error.txt");
-			
+			bw2 = new BufferedWriter(fw2);
+
 			while ((linea = br.readLine()) != null) { // LEEMOS FICHERO
 
-				try { // SEGUNDO TRY
+				
 
 					campos = linea.split(","); // DIVIDIMOS POR ","
+					try {
 					if (campos.length == NUM_CAMPOS_LINEA) {
-						p = mapeoLinea(campos);
-						lista.add(p);
-						// MIENTRAS SE CUMPLA, AÑADIR A LA LISTA
-						if (p.getEdad() >= 18 && Validaciones.email(p.getEmail()) && Validaciones.dni(p.getDni())) {
-							
-
-							bw1 = new BufferedWriter(fw1);
-							bw1.write(p + "\r\n");
-							bw1.flush();
-							contbueno++;	
-						} // FIN DE IF QUE COMPRUEBA CONDICIONES A CUMPLIR PARA GUARDAR EN ARCHIVO
 						
-						else {
-							//METEMOS EN Personas.error.txt
-							bw2 = new BufferedWriter(fw2);
-							bw2.write(p + "\r\n");
+							p = mapeoLinea(campos);
+							
+							// MIENTRAS SE CUMPLA, AÑADIR A LA LISTA
+
+							bw1.write(linea + "\r\n");
+							bw1.flush();
+							contbueno++;
+						}else {
+							
+							
+							bw2.write(linea + "\r\n");
+							bw2.flush();
+							contmal++;
+						}
+					}catch (PersonaException e) {
+							// METEMOS EN Personas.error.txt
+							
+							bw2.write(linea + "\r\n");
 							bw2.flush();
 							contmal++;
 							
 						}
 
-					} // FIN DE IF QUE MIDE NUMERO CAMPOS
+					 // FIN DE IF QUE MIDE NUMERO CAMPOS
 
-				} catch (Exception e) { /* FIN DE TRY2 */
-					e.printStackTrace();
-				}
+				
 			} // FIN DE WHILE
-			System.out.println(contbueno+" usuarios son correctos");
-			System.out.println(contmal+" usuarios son incorrectos");
+			System.out.println(contbueno + " usuarios son correctos");
+			System.out.println(contmal + " usuarios son incorrectos");
 			System.out.println("Se han distribuido los usuarios en sus respectivos .txt");
+		
 		} catch (Exception e1) { // FIN DE TRY1
 			e1.printStackTrace();
 			System.out.println();

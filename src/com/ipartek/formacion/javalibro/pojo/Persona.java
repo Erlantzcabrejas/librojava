@@ -21,10 +21,10 @@ public class Persona {
 		this.nombre = nombre;
 		this.ape1 = ape1;
 		this.ape2 = ape2;
-		this.email = email;
-		this.dni = dni;
+		setEmail(email);
+		setDni(dni);
 		this.rol = rol;
-		this.edad = edad;
+		setEdad(edad);
 		//setEdad(edad);
 	}
 

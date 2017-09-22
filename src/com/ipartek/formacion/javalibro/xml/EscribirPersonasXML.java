@@ -35,12 +35,56 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class EscribirPersonasXML {
 
 	public static void main(String[] args) {
 
+		// C:\Users\Administrador\eclipse-workspace\LibroAnder\data\personas.txt
+				int cont = 0;
+				// fichero de texto personas
+				FileReader fr=null; // lector de ficheros de caracteres
+				BufferedReader br = null; // buffer para mejorar lectura del fichero
+
+				try {
+
+					fr = new FileReader("C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\personas.txt");
+					br = new BufferedReader(fr);
+					String linea="";
+					
+					while((linea=br.readLine())!=null) {
+						System.out.println(linea);
+						cont++;
+					}
+					System.out.println("--------------------------------------");
+					System.out.println("Lineas leidas: "+cont);
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+					try {
+						br.close();
+						fr.close();
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+		
+		
+		
+		
+		
+		/*
+		
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -105,12 +149,12 @@ public class EscribirPersonasXML {
 		
 		
 		
-		
+	
 		
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-
+	*/
 	}
 
 }
