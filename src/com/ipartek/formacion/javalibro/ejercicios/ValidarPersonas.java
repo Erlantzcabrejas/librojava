@@ -95,7 +95,7 @@ public class ValidarPersonas {
 							bw2.flush();
 							contmal++;
 							
-						}
+					}
 
 					 // FIN DE IF QUE MIDE NUMERO CAMPOS
 

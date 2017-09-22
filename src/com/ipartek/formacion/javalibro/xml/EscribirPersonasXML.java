@@ -36,53 +36,118 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.ipartek.formacion.javalibro.excepciones.PersonaException;
+import com.ipartek.formacion.javalibro.pojo.Persona;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class EscribirPersonasXML {
 
-	public static void main(String[] args) {
+		 final static String PATH_FICHERO_PERSONAS = "C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\personas.txt";
+		 final static int CAMPOS_NOMBRE = 0;
+		 final static int CAMPOS_APE1 = 1;
+		 final static int CAMPOS_APE2 = 2;
+		 final static int CAMPOS_EDAD = 3;
+		 final static int CAMPOS_MAIL = 4;
+		 final static int CAMPOS_DNI = 5;
+		 final static int CAMPOS_ROL = 6;
+		 final static int NUM_CAMPOS_LINEA = 7;
 
-		// C:\Users\Administrador\eclipse-workspace\LibroAnder\data\personas.txt
-				int cont = 0;
-				// fichero de texto personas
-				FileReader fr=null; // lector de ficheros de caracteres
-				BufferedReader br = null; // buffer para mejorar lectura del fichero
+		
 
+		public static void main(String[] args) {
+			cargaArrayList();
+
+		}
+
+		private static Persona mapeoLinea(String[] campos) throws NumberFormatException, PersonaException {
+
+			Persona p = new Persona(campos[CAMPOS_NOMBRE], campos[CAMPOS_APE1], campos[CAMPOS_APE2], campos[CAMPOS_MAIL],
+					campos[CAMPOS_DNI], campos[CAMPOS_ROL], Integer.parseInt(campos[CAMPOS_EDAD]));
+			return p;
+		}
+		
+		private static void cargaArrayList() {
+			ArrayList<Persona> lista = new ArrayList();
+			FileReader fr = null;
+			BufferedReader br = null;
+			FileWriter fw1 = null;
+			FileWriter fw2 = null;
+			BufferedWriter bw1 = null;
+			BufferedWriter bw2 = null;
+			long contbueno = 0;
+			long contmal = 0;
+
+			try { // PRIMER TRY
+				fr = new FileReader(PATH_FICHERO_PERSONAS);
+				br = new BufferedReader(fr);
+				String linea = "";
+				Persona p = null;
+				String[] campos;
+				fw1 = new FileWriter( // ESCRIBIMOS EN Personas.OK.txt
+						"C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.OK.txt");
+				bw1 = new BufferedWriter(fw1);
+				fw2 = new FileWriter( // ESCRIBIMOS EN Personas.error.txt
+						"C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\Personas.error.txt");
+				bw2 = new BufferedWriter(fw2);
+
+				while ((linea = br.readLine()) != null) { // LEEMOS FICHERO
+
+					
+
+						campos = linea.split(","); // DIVIDIMOS POR ","
+						try {
+						if (campos.length == NUM_CAMPOS_LINEA) {
+							
+								p = mapeoLinea(campos);
+								
+								// MIENTRAS SE CUMPLA, AÑADIR A LA LISTA
+
+								bw1.write(linea + "\r\n");
+								bw1.flush();
+								contbueno++;
+						}else {
+								
+								
+								bw2.write(linea + "\r\n");
+								bw2.flush();
+								contmal++;
+							}
+						}catch (PersonaException e) {
+								// METEMOS EN Personas.error.txt
+								
+								bw2.write(linea + "\r\n");
+								bw2.flush();
+								contmal++;
+								
+						}
+
+						
+
+			}
+			}catch(Exception e1) { // FIN DE TRY1
+				e1.printStackTrace();
+				System.out.println();
+			} finally {
 				try {
-
-					fr = new FileReader("C:\\Users\\Administrador\\eclipse-workspace\\LibroJava\\src\\data\\personas.txt");
-					br = new BufferedReader(fr);
-					String linea="";
-					
-					while((linea=br.readLine())!=null) {
-						System.out.println(linea);
-						cont++;
-					}
-					System.out.println("--------------------------------------");
-					System.out.println("Lineas leidas: "+cont);
-					
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+					bw1.close();
+					bw2.close();
+					fw1.close();
+					bw2.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					System.out.println("No se puede cerrar el Buffer y Writer");
 					e.printStackTrace();
-				}finally {
-					try {
-						br.close();
-						fr.close();
-					}catch(Exception e) {
-						e.printStackTrace();
-					}
 				}
-		
-		
-		
-		
-		
+			}
+		}
+}	
 		/*
 		
 		try {
@@ -155,6 +220,4 @@ public class EscribirPersonasXML {
 			// TODO: handle exception
 		}
 	*/
-	}
 
-}
